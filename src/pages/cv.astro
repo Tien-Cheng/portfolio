@@ -8,11 +8,21 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     <div class="text-3xl w-full font-bold">Profile</div>
   </div>
 
-  <div class="mb-10 text-justify">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <div class="mb-10 text-justify space-y-2">
+    <p>
+      I'm Tien Cheng, a graduate of Singapore Polytechnic (SP) with a Diploma in
+      Applied AI and Analytics, and a recipient of the Singapore Computer
+      Society Silver Medal. As a former co-founder and operations department
+      head of SPAI (an AI Singapore Student Chapter) in AY21/22, I actively
+      promoted the field of Data Science during my time at SP.
+    </p>
+    <p>
+      Currently, I'm a machine learning engineer and co-founder at Flora, a
+      startup dedicated to helping businesses better organize their information
+      and synthesise it into knowledge. Leveraging my expertise in AI and
+      analytics, I'm passionate about developing cutting-edge solutions that
+      drive efficiency and growth.
+    </p>
   </div>
 
   <div class="mb-5">
@@ -21,13 +31,24 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 
   <div class="time-line-container grid gap-4 mb-10">
     <TimeLineElement
-      title="Title Name"
-      subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
-    />
-    <TimeLineElement
-      title="Title Name"
-      subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
-    />
+      title="Diploma in Applied AI and Analytics"
+      subtitle="2020 to 2023 at Singapore Polytechnic, Singapore"
+    >
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>GPA: 4/4</li>
+        <li>
+          Relevant Coursework: Front End Web Development, Back End Web
+          Development, AI and Machine Learning, Deep Learning, DevOps for
+          Automa‑ tion and AI, Programming for Data Analytics and Statistics for
+          Data Science
+        </li>
+        <li>
+          Co-founded SPAI, an AI Singapore Student Chapter, organising three
+          successful data science workshops (attended by over 80 students),
+          helping SPAI to win an SP Excellence Award in its first year.
+        </li>
+      </ul>
+    </TimeLineElement>
   </div>
 
   <div class="mb-5">
@@ -36,22 +57,83 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 
   <div class="time-line-container mb-10">
     <TimeLineElement
-      title="Job Title at Project or Company Name"
-      subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
+      title="Conscript Soldier at Singapore Armed Forces"
+      subtitle="From October 2023 to Present at Singapore Armed Forces, Singapore"
+    />
+    <TimeLineElement
+      title="Co-Founder at Flora Softworks"
+      subtitle="From February 2023 to Present at Flora Softworks, Singapore"
     >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>
+          Flora is a tech startup that builds software to help organisations
+          manage their information, with our primary product being an enterprise
+          search application.
+        </li>
+        <li>
+          Developed a custom search engine using Elasticsearch, and a
+          microservice architecture using Jina and MongoDB, to enable
+          organisations to index and search through their data sources.
+        </li>
+        <li>
+          Developed unit tests for the AI microservices using Pytest, and also
+          set up a Kubeflow pipeline on Vertex AI for running evaluation of our
+          neural search engine using BEIR.
+        </li>
+        <li>
+          Trained a custom object detection model using MMYOLO for document
+          layout detection, applying techniques like knowledge distillation to
+          improve inference speed by four times while also improving mean
+          average precision (mAP) from 0.41 to 0.5 (a 21.95% improvement).
+        </li>
+        <li>
+          Deployed the application on Google Cloud Platform and Firebase, and
+          also performed on-premise deployment as part of a trial run for a
+          client.
+        </li>
+        <li>
+          Used OpenTelemetry in combination with Prometheus and Grafana to track
+          and monitor the performance of the application, helping to identify
+          and resolve memory leaks and bottlenecks.
+        </li>
+      </ul>
     </TimeLineElement>
     <TimeLineElement
-      title="Job Title at Project or Company Name"
-      subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
+      title="Intern at Defence Science and Technology Agency"
+      subtitle="From September 2022 to February 2023 at Defence Science and Technology Agency, Singapore"
     >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-    </TimeLineElement>
-    <TimeLineElement
-      title="Job Title at Project or Company Name"
-      subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-    >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>
+          Core developer of the AI App Store project, an in-house platform built
+          using Vue.js and FastAPI for AI developers to publish and share their
+          models in the form of model cards, and deploy containers as KNative
+          services through a GUI interface.
+        </li>
+        <li>
+          Developed API endpoints to enable the managing of services in a
+          Kubernetes cluster through the app, as well as integration with the
+          ClearML platform.
+        </li>
+        <li>
+          Developed a custom WYSIWYG editor using the TipTap library, enabling
+          the insertion of editable Plotly.js graphs within the markup.
+        </li>
+        <li>
+          Wrote and maintained unit tests, and established automated testing
+          through a CI pipeline deployed on GitHub Actions, resulting in a more
+          reliable and robust application.
+        </li>
+        <li>
+          Set up Helm charts, documentation and deployed the project on a
+          Kubernetes cluster for use internally by two departments within DSTA.
+        </li>
+        <li>
+          Contributed to a separate team project where I developed microservices
+          for a prototype real time video analytics pipeline, integrating models
+          like YOLOv5 and ByteTrack, using PyTorch, OpenCV, Triton Inference
+          Server and Apache Kafka.
+        </li>
+      </ul>
     </TimeLineElement>
   </div>
 
@@ -61,32 +143,67 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 
   <ul class="list-disc mx-6 mb-10 grid gap-2">
     <li>
-      <a href="#" target="_blank"> Certification Name (with link)</a>
+      <a
+        href="https://www.coursera.org/account/accomplishments/verify/ZRWMSSYD83SW"
+        target="_blank"
+      >
+        Generative AI with Large Language Models (2023)</a
+      >
     </li>
     <li>
-      <a href="#" target="_blank"> Certification Name (with link)</a>
+      <a href="#" target="_blank">
+        Introduction to Machine Learning in Production (2022)</a
+      >
     </li>
+    <li>
+      <a href="#" target="_blank"> Deep Learning Specialization (2022)</a>
+    </li>
+    <li>
+      <a href="#" target="_blank"> Machine Learning (2021)</a>
+    </li>
+    <li>Wiley Certified Data Analyst (2020)</li>
   </ul>
 
   <div class="mb-5">
     <div class="text-3xl w-full font-bold">Skills</div>
   </div>
 
-  <ul class="list-disc md:columns-5 columns-2 mx-6">
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
+  <ul class="list-disc md:columns-5 columns-2 mx-6 mb-10">
+    <li>Python</li>
+    <li>Typescript</li>
+    <li>C++</li>
+    <li>Vue.js</li>
+    <li>React</li>
+    <li>Express.js</li>
+    <li>Fastify</li>
+    <li>FastAPI</li>
+    <li>MongoDB</li>
+    <li>MySQL</li>
+    <li>Firebase</li>
+    <li>Elasticsearch</li>
+    <li>Google Cloud Platform</li>
+    <li>Docker</li>
+    <li>Kubernetes</li>
+    <li>Git</li>
+    <li>Scikit-Learn</li>
+    <li>PyTorch</li>
+    <li>Pandas</li>
+  </ul>
+
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Awards</div>
+  </div>
+
+  <ul class="list-disc mx-6 mb-10 grid gap-2">
+    <li>NUS Global Merit Scholarship (2023)</li>
+    <li>Singapore Computer Society Silver Medal (2023)</li>
+    <li>
+      Best Junior Hack of the NTU MLDA Deep Learning Week Hackathon (2021)
+    </li>
+    <li>
+      Champion of the Collegial Artificial Intelligence Innovation Competition
+      (2020)
+    </li>
+    <li>DSTA Polytechnic Digital Scholarship (2020)</li>
   </ul>
 </BaseLayout>
