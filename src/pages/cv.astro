@@ -10,19 +10,22 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 
   <div class="mb-10 text-justify space-y-2">
     <p>
-      I'm Tien Cheng, a graduate of Singapore Polytechnic (SP) with a Diploma in
-      Applied AI and Analytics, and a recipient of the Singapore Computer
+      I'm Tien Cheng, an undergraduate reading Computer Science at the
+      National University of Singapore (NUS) on the NUS Global Merit
+      Scholarship. I'm a graduate of Singapore Polytechnic (SP) with a Diploma
+      in Applied AI and Analytics, and a recipient of the Singapore Computer
       Society Silver Medal. As a former co-founder and operations department
       head of SPAI (an AI Singapore Student Chapter) in AY21/22, I actively
       promoted the field of Data Science during my time at SP.
     </p>
     <p>
-      Currently, I'm a full-time national serviceman (i.e conscript) at the <a
-        href="https://www.mindef.gov.sg/oms/dis/"
+      I completed my full-time national service as a Software Developer at
+      the <a href="https://www.mindef.gov.sg/oms/dis/"
         >Digital and Intelligence Service</a
-      >, but I also work on personal projects and competitions in my free time.
-      After serving NS, I'll be doing an Computer Science undergrad at the
-      National University of Singapore.
+      >, and I'm currently a co-founder of Conform Labs. Outside of work and
+      school, I serve as President of RC4Entre and a Coreteam member of NUS
+      Hackers, and I also work on personal projects and competitions in my
+      free time.
     </p>
   </div>
 
@@ -31,6 +34,15 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
   </div>
 
   <div class="time-line-container grid gap-4 mb-10">
+    <TimeLineElement
+      title="B.Comp. in Computer Science"
+      subtitle="Expected 2029 at National University of Singapore, Singapore"
+    >
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>NUS Global Merit Scholarship.</li>
+        <li>GPA: 4.79/5.0.</li>
+      </ul>
+    </TimeLineElement>
     <TimeLineElement
       title="Diploma in Applied AI and Analytics"
       subtitle="2020 to 2023 at Singapore Polytechnic, Singapore"
@@ -58,8 +70,25 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 
   <div class="time-line-container mb-10">
     <TimeLineElement
-      title="Conscript Soldier at the Digital and Intelligence Service, Singapore Armed Forces"
-      subtitle="From October 2023 to Present at Singapore Armed Forces, Singapore"
+      title="Co-founder at Conform Labs"
+      subtitle="From August 2025 to December 2025 at Conform Labs, Singapore"
+    >
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>
+          Built a voice-agent evaluation framework to compare agent quality
+          across simulated conversations using automated scoring and Langfuse
+          trace analysis.
+        </li>
+        <li>
+          Developed form analytics, document-to-form generation, and
+          real-time voice-agent pipelines with TypeScript, FastAPI, and
+          Pipecat.
+        </li>
+      </ul>
+    </TimeLineElement>
+    <TimeLineElement
+      title="Software Developer at the Digital and Intelligence Service, Singapore Armed Forces (National Service)"
+      subtitle="From May 2023 to August 2025 at Singapore Armed Forces, Singapore"
     >
       <ul class="list-disc mx-6 mb-10 grid gap-2">
         <li>
@@ -67,13 +96,22 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
           vocational training course.
         </li>
         <li>
-          Currently working on LLM agent workflows for automating work within my DIS unit.
+          Built an LLM-powered exam-marking platform that reduced instructor
+          grading time by over 50% in an air-gapped environment.
+        </li>
+        <li>
+          Improved grader accuracy and robustness by benchmarking prompts and
+          automating prompt optimization with DSPy and open-source data.
+        </li>
+        <li>
+          Integrated Langfuse telemetry to monitor traces, latency, and
+          scoring quality, reducing time spent debugging the pipeline.
         </li>
       </ul>
     </TimeLineElement>
     <TimeLineElement
       title="Co-Founder at Flora Softworks"
-      subtitle="From February 2023 to Present at Flora Softworks, Singapore"
+      subtitle="From February 2023 to October 2023 at Flora Softworks, Singapore"
     >
       <ul class="list-disc mx-6 mb-10 grid gap-2">
         <li>
@@ -82,9 +120,9 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
           search application.
         </li>
         <li>
-          Developed a custom search engine using Elasticsearch, and a
-          microservice architecture using Jina and MongoDB, to enable
-          organisations to index and search through their data sources.
+          Built a neural search API for unstructured enterprise documents
+          using Elasticsearch, ONNX Runtime, Jina, FastAPI, and MongoDB,
+          supporting public-sector and enterprise pilots.
         </li>
         <li>
           Developed unit tests for the AI microservices using Pytest, and also
@@ -92,15 +130,15 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
           neural search engine using BEIR.
         </li>
         <li>
-          Trained a custom object detection model using MMYOLO for document
-          layout detection, applying techniques like knowledge distillation to
-          improve inference speed by four times while also improving mean
-          average precision (mAP) from 0.41 to 0.5 (a 21.95% improvement).
+          Improved document-layout detection throughput by 400% by distilling
+          and quantizing an RTMDet model for production inference, while also
+          improving mean average precision (mAP) from 0.41 to 0.5 (a 21.95%
+          improvement).
         </li>
         <li>
-          Deployed the application on Google Cloud Platform and Firebase, and
-          also performed on-premise deployment as part of a trial run for a
-          client.
+          Deployed pilot systems on Google Cloud Platform and refactored
+          services for self-hosted environments to enable on-premise adoption
+          with clients including SkillsFuture SG, NSCC, and Coherent, Inc.
         </li>
         <li>
           Used OpenTelemetry in combination with Prometheus and Grafana to track
@@ -149,6 +187,35 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
   </div>
 
   <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Leadership</div>
+  </div>
+
+  <div class="time-line-container mb-10">
+    <TimeLineElement
+      title="President at RC4Entre"
+      subtitle="AY26/27 at RC4Entre, National University of Singapore"
+    >
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>
+          Leading RC4Entre, the entrepreneurship CCA of Residential College 4
+          at NUS.
+        </li>
+      </ul>
+    </TimeLineElement>
+    <TimeLineElement
+      title="Coreteam Member at NUS Hackers"
+      subtitle="From 2026 at NUS Hackers, Singapore"
+    >
+      <ul class="list-disc mx-6 mb-10 grid gap-2">
+        <li>
+          Member of the Coreteam, the organising group behind NUS Hackers'
+          events and initiatives for the student hacker community.
+        </li>
+      </ul>
+    </TimeLineElement>
+  </div>
+
+  <div class="mb-5">
     <div class="text-3xl w-full font-bold">Certifications</div>
   </div>
 
@@ -181,24 +248,26 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 
   <ul class="list-disc md:columns-5 columns-2 mx-6 mb-10">
     <li>Python</li>
-    <li>Typescript</li>
-    <li>C++</li>
-    <li>Vue.js</li>
-    <li>React</li>
-    <li>Express.js</li>
-    <li>Fastify</li>
+    <li>TypeScript</li>
+    <li>SQL</li>
+    <li>PyTorch</li>
+    <li>Hugging Face Transformers</li>
+    <li>DSPy</li>
+    <li>RAG</li>
+    <li>ONNX Runtime</li>
+    <li>Scikit-learn</li>
     <li>FastAPI</li>
+    <li>Streamlit</li>
+    <li>Celery</li>
+    <li>PostgreSQL</li>
+    <li>PGVector</li>
     <li>MongoDB</li>
-    <li>MySQL</li>
-    <li>Firebase</li>
     <li>Elasticsearch</li>
-    <li>Google Cloud Platform</li>
     <li>Docker</li>
     <li>Kubernetes</li>
-    <li>Git</li>
-    <li>Scikit-Learn</li>
-    <li>PyTorch</li>
-    <li>Pandas</li>
+    <li>Google Cloud Platform</li>
+    <li>Langfuse</li>
+    <li>OpenTelemetry</li>
   </ul>
 
   <div class="mb-5">
@@ -216,5 +285,15 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
       (2020)
     </li>
     <li>DSTA Polytechnic Digital Scholarship (2020)</li>
+    <li>
+      1st Place (University Category), HPC Innovation Competition 2023, for
+      OwlShield, an LLM safety firewall
+    </li>
+    <li>
+      Contributed a <a
+        href="https://github.com/NVIDIA/garak"
+        target="_blank">LiteLLM integration</a
+      > to NVIDIA's Garak, an open-source LLM security scanner (8k+ stars)
+    </li>
   </ul>
 </BaseLayout>
