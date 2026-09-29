@@ -532,7 +532,14 @@ stage_analytics() {
   step "In Manage site, choose 'Enable with JS Snippet installation' so Cloudflare doesn't inject"
   step "a second beacon."
   step "Copy the token value from the snippet: data-cf-beacon='{\"token\": \"…\"}'"
-  ask PUBLIC_CF_ANALYTICS_TOKEN "Paste the site token:"
+  ask PUBLIC_CF_ANALYTICS_TOKEN "Paste the site token (or the whole snippet):"
+  # Accept either the bare token or the full snippet; keep only the 32-hex token.
+  token=$(grep -Eo '[0-9a-fA-F]{32}' <<<"$PUBLIC_CF_ANALYTICS_TOKEN" | head -n1 || true)
+  if [[ -z "$token" ]]; then
+    warn "couldn't find a 32-character token in that input; rerun this stage."
+    exit 1
+  fi
+  PUBLIC_CF_ANALYTICS_TOKEN="$token"
   note "Not written to .env, so local builds don't report page views."
   set_repo_var "$PORTFOLIO_REPO" PUBLIC_CF_ANALYTICS_TOKEN "$PUBLIC_CF_ANALYTICS_TOKEN"
   if confirm "Rebuild and redeploy main now so the beacon goes live?"; then
