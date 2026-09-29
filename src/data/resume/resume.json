@@ -1,0 +1,131 @@
+{
+  "name": "Tien Cheng Oh",
+  "location": "Singapore",
+  "email": "tiencheng.oh@gmail.com",
+  "social_networks": [
+    {
+      "network": "LinkedIn",
+      "username": "ohtiencheng"
+    },
+    {
+      "network": "GitHub",
+      "username": "Tien-Cheng"
+    }
+  ],
+  "sections": {
+    "education": [
+      {
+        "institution": "National University of Singapore",
+        "area": "Computer Science",
+        "degree": "B.Comp.",
+        "location": "Singapore",
+        "date": "Expected 2029",
+        "highlights": [
+          "NUS Global Merit Scholarship.",
+          "GPA 4.79/5.0."
+        ]
+      },
+      {
+        "institution": "Singapore Polytechnic",
+        "area": "Applied AI and Analytics",
+        "degree": "Diploma",
+        "location": "Singapore",
+        "end_date": "2023-03",
+        "highlights": [
+          "GPA 4.0/4.0; Singapore Computer Society Silver Medal."
+        ]
+      }
+    ],
+    "experience": [
+      {
+        "company": "TikTok",
+        "position": "Backend Software Engineer Intern",
+        "location": "Singapore",
+        "start_date": "2026-07-27",
+        "end_date": "present",
+        "highlights": [
+          "Fixed a production video moderation agent that often flagged entire videos instead of the violating segment, raising precise timestamp output from 72% to 91% by enforcing structured JSON output and fixing a validation bug.",
+          "Built a 3,900-case benchmark to test whether retrieving past moderation decisions (RAG) improves an LLM moderation agent, and prototyped an autoresearch agent that lets ops teams run their own experiments.",
+          "Added token, latency, and cache metrics and a Grafana dashboard to a Go captioning service to track LLM cost."
+        ]
+      },
+      {
+        "company": "Conform Labs",
+        "position": "Co-founder",
+        "location": "Singapore",
+        "start_date": "2025-08",
+        "end_date": "2025-12",
+        "highlights": [
+          "Built a voice-agent evaluation framework to compare agent quality across simulated conversations using automated scoring and Langfuse trace analysis.",
+          "Developed form analytics, document-to-form generation, and real-time voice-agent pipelines with TypeScript, FastAPI, and Pipecat."
+        ]
+      },
+      {
+        "company": "Digital and Intelligence Service",
+        "position": "Software Developer, National Service",
+        "location": "Singapore",
+        "start_date": "2023-05",
+        "end_date": "2025-08",
+        "highlights": [
+          "Built an LLM-powered exam-marking platform with custom RAG over exam materials that reduced instructor grading time by over 50% in an air-gapped environment.",
+          "Improved grader accuracy and robustness by benchmarking prompts and automating prompt optimization with DSPy and open-source data.",
+          "Integrated Langfuse telemetry to monitor traces, latency, and scoring quality, reducing time spent debugging the pipeline."
+        ]
+      },
+      {
+        "company": "Flora",
+        "position": "Co-founder",
+        "location": "Singapore",
+        "start_date": "2023-02",
+        "end_date": "2023-10",
+        "highlights": [
+          "Built a neural search API for unstructured enterprise documents with Elasticsearch, ONNX Runtime, Jina, FastAPI, and MongoDB, supporting public-sector and enterprise pilots.",
+          "Improved document-layout detection throughput by 400% by distilling and quantizing an RTMDet model for production inference.",
+          "Deployed pilot systems on GCP and refactored services for self-hosted environments to enable on-premise adoption with SkillsFuture SG, NSCC, and Coherent, Inc."
+        ]
+      },
+      {
+        "company": "Defence Science and Technology Agency",
+        "position": "Software Engineer Intern",
+        "location": "Singapore",
+        "start_date": "2022-09",
+        "end_date": "2023-02",
+        "highlights": [
+          "Built an internal MLOps model hub with Vue.js, FastAPI, and MongoDB that let teams deploy ML models as Kubernetes services.",
+          "Automated deployment to air-gapped Kubernetes environments with Skaffold, Helm, and service-scaling APIs for 2 departments.",
+          "Established a GitHub Actions CI pipeline for unit testing and linting to improve code quality and release confidence."
+        ]
+      }
+    ],
+    "Awards & Open Source": [
+      {
+        "bullet": "1st Place (University Category), HPC Innovation Competition 2023, for OwlShield, an LLM safety firewall."
+      },
+      {
+        "bullet": "Contributed a [LiteLLM integration](https://github.com/NVIDIA/garak/pull/572) to NVIDIA's Garak, an open-source LLM security scanner (8k+ stars)."
+      }
+    ],
+    "skills": [
+      {
+        "label": "Languages",
+        "details": "Python, Go, Java, TypeScript, SQL"
+      },
+      {
+        "label": "ML/LLM",
+        "details": "PyTorch, Hugging Face Transformers, DSPy, RAG, ONNX Runtime, Scikit-learn"
+      },
+      {
+        "label": "Backend/Serving",
+        "details": "FastAPI, Streamlit, Celery"
+      },
+      {
+        "label": "Data/Vector/Search",
+        "details": "PostgreSQL, PGVector, MongoDB, Elasticsearch"
+      },
+      {
+        "label": "Infrastructure/Observability",
+        "details": "Docker, Kubernetes, GCP, Langfuse, OpenTelemetry, Grafana"
+      }
+    ]
+  }
+}

@@ -1,17 +1,15 @@
 ---
-const today = new Date();
+import meta from "../data/resume/meta.json";
+import { site } from "../data/site";
+
+const updated = new Date(`${meta.syncedAt}T00:00:00Z`).toLocaleDateString("en-GB", {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
 ---
 
-<footer class="footer footer-center block mb-5 pt-10">
-  <div class="pb-2">
-    &copy; {today.getFullYear()} Oh Tien Cheng 
-  </div>
-  <div class="inline opacity-75">
-    <!-- Thanks for using this template. You can keep this line to support my work :) -->
-    <a href="https://astrofy-template.netlify.app/" target="_blank" class="font-bold">Astrofy Template</a> developed by
-    <a href="https://manuelernestog.github.io" target="_blank" class="font-bold">Manuel Ernesto ⚡️</a>
-  </div>
+<footer class="flex flex-wrap justify-between gap-4 border-t border-rule pt-6 text-sm text-faint">
+  <span>{site.location}</span>
+  <span>Updated {updated}</span>
 </footer>
-<style>
-
-</style>

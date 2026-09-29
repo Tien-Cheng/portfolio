@@ -1,0 +1,29 @@
+---
+import { site } from "../data/site";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const items = [
+  { href: "/", label: "Index" },
+  { href: "/cv", label: "CV" },
+];
+---
+
+<nav aria-label="Main" class="flex items-baseline justify-between gap-4 text-base">
+  <a href="/" class="font-semibold no-underline">{site.name}</a>
+  <div class="flex items-baseline gap-5 text-muted">
+    {items.map((item) => {
+  const current = path === item.href;
+  return (
+    <a
+      href={item.href}
+      class:list={[current ? "underline" : "no-underline"]}
+      aria-current={current ? "page" : undefined}
+    >
+      {item.label}
+    </a>
+  );
+})}
+    <ThemeToggle />
+  </div>
+</nav>
