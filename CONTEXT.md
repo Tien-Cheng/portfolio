@@ -1,11 +1,13 @@
 # Portfolio
 
-Tien Cheng Oh's personal site at tiencheng.dev: who he is, what he has built, and his work history. Career facts come from his private resume; everything else is written for the site.
+Tien Cheng Oh's personal website: who he is, what he has built, and his work history. Career facts come from his Resume; everything else is written for the site.
 
-## Resume
+## Language
+
+### Resume
 
 **Resume**:
-The RenderCV source for Tien Cheng's career history, kept in the private resume repository, and the PDF rendered from it.
+Tien Cheng's private, authoritative record of his career history, and the PDF rendered from it.
 _Avoid_: CV (when you mean the source or the PDF)
 
 **Resume variant**:
@@ -17,17 +19,21 @@ The single Resume variant whose content the site shows and whose PDF visitors ca
 _Avoid_: Public resume, default variant
 
 **Resume snapshot**:
-A sanitised, point-in-time copy of the Published variant (structured data, PDF, and where it came from) that lives in the portfolio. It carries no phone number and no private notes.
+A sanitised, point-in-time copy of the Published variant (its content, its PDF, and where it came from) that the site shows. It carries no phone number and no private notes.
 _Avoid_: Resume export, resume data, resume cache
 
-## Site
+### Site
+
+**Overview**:
+The site's front page: a short introduction followed by summary lists of work, Projects and education.
+_Avoid_: Home page, landing page, index
 
 **CV page**:
-The web page at `/cv` that presents Tien Cheng's career history. It shows everything in the Resume PDF and more: the PDF is a subset of the CV page.
+The page that presents Tien Cheng's full career history. It shows everything in the Resume PDF and more: the PDF is a subset of the CV page.
 _Avoid_: Resume page
 
 **Project**:
-Something Tien Cheng built, listed on the index with a year and a one-line description.
+Something Tien Cheng built, listed in the Overview with a year and a one-line description.
 _Avoid_: Portfolio item, work
 
 **Case study**:
@@ -35,7 +41,7 @@ A long-form page about one Project: the problem, what he built, and how it turne
 _Avoid_: Project page, write-up, blog post
 
 **Work summary**:
-A one-line, site-owned description of a role, shown on the CV page beside the bullets that come from the Resume snapshot.
+A one-line, site-owned description of a role, shown in the Overview's list of work.
 _Avoid_: Role description, blurb
 
 **Leadership entry**:

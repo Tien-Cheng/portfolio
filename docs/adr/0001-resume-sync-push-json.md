@@ -22,6 +22,7 @@ We chose this because:
 
 ## Consequences
 
-- `src/data/resume/` and `public/Tien_Cheng_Oh_CV.pdf` are written by the sync. Hand edits get overwritten on the next sync.
-- The resume repo validates its export against `src/data/resume/schema.json` before pushing, so the schema is the contract between the two repos. Change it here first.
+- The sync owns exactly three files: `src/data/resume/resume.json`, `src/data/resume/meta.json` and `public/Tien_Cheng_Oh_CV.pdf`. Hand edits to them get overwritten on the next sync.
+- The resume repo validates its export against `src/data/resume/schema.json` before pushing, so the schema is the contract between the two repos. The sync never writes it: it is generated from the Zod source in `src/lib/resume-schema.ts` by `pnpm gen:schema` and committed, and CI fails if the committed copy is stale.
+- To change the schema: edit `src/lib/resume-schema.ts`, run `pnpm gen:schema`, commit both files, and only then update the resume repo if its export needs to change.
 - Sync commits land on `main` directly and trigger a normal deploy.
