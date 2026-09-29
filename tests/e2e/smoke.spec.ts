@@ -118,39 +118,69 @@ test.describe("navigation", () => {
   }
 });
 
-test.describe("theme toggle", () => {
+const background = {
+  light: "rgb(251, 250, 246)", // --bg #fbfaf6
+  dark: "rgb(22, 21, 19)", // --bg #161513
+} as const;
+
+const flip = { light: "dark", dark: "light" } as const;
+
+for (const scheme of ["light", "dark"] as const) {
+  test.describe(`theme toggle when the system prefers ${scheme}`, () => {
+    test.use({ colorScheme: scheme });
+
+    test("flips the colours, reports its state, and remembers it", async ({ page }) => {
+      await page.goto("/");
+      const html = page.locator("html");
+      const body = page.locator("body");
+      const toggle = page.locator("#theme-toggle");
+      const other = flip[scheme];
+
+      await expect(body).toHaveCSS("background-color", background[scheme]);
+      await expect(toggle).toHaveAttribute("aria-pressed", String(scheme === "dark"));
+
+      await toggle.click();
+      await expect(html).toHaveAttribute("data-theme", other);
+      await expect(body).toHaveCSS("background-color", background[other]);
+      await expect(toggle).toHaveAttribute("aria-pressed", String(other === "dark"));
+
+      await page.reload();
+      await expect(html).toHaveAttribute("data-theme", other);
+      await expect(body).toHaveCSS("background-color", background[other]);
+      await expect(toggle).toHaveAttribute("aria-pressed", String(other === "dark"));
+
+      await toggle.click();
+      await expect(html).toHaveAttribute("data-theme", scheme);
+      await expect(body).toHaveCSS("background-color", background[scheme]);
+
+      await page.reload();
+      await expect(body).toHaveCSS("background-color", background[scheme]);
+    });
+  });
+}
+
+test.describe("stored theme", () => {
   test.use({ colorScheme: "light" });
 
-  test("flips the theme, reports its state, and remembers it", async ({ page }) => {
-    await page.goto("/");
-    const html = page.locator("html");
-    const toggle = page.locator("#theme-toggle");
-
-    await expect(toggle).toHaveAttribute("aria-pressed", "false");
-
-    await toggle.click();
-    await expect(html).toHaveAttribute("data-theme", "dark");
-    await expect(toggle).toHaveAttribute("aria-pressed", "true");
-
-    await page.reload();
-    await expect(html).toHaveAttribute("data-theme", "dark");
-    await expect(toggle).toHaveAttribute("aria-pressed", "true");
-
-    await toggle.click();
-    await expect(html).toHaveAttribute("data-theme", "light");
-    await expect(toggle).toHaveAttribute("aria-pressed", "false");
-  });
-
-  test.describe("when the system prefers dark", () => {
-    test.use({ colorScheme: "dark" });
-
-    test("starts dark", async ({ page }) => {
-      await page.goto("/");
-      await expect(page.locator("#theme-toggle")).toHaveAttribute("aria-pressed", "true");
-      const scheme = await page.evaluate(
-        () => getComputedStyle(document.documentElement).colorScheme,
-      );
-      expect(scheme).toBe("dark");
+  test("is applied by the head script before the body is parsed", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("theme", "dark");
+      // Record the theme at the moment <body> is inserted, i.e. before first paint.
+      const observer = new MutationObserver(() => {
+        if (!document.body) return;
+        document.documentElement.dataset.themeAtBody = document.documentElement.dataset.theme ?? "";
+        observer.disconnect();
+      });
+      observer.observe(document, { childList: true, subtree: true });
     });
+
+    await page.goto("/", { waitUntil: "commit" });
+    await page.waitForLoadState("domcontentloaded");
+    const theme = await page.evaluate(() => ({
+      now: document.documentElement.dataset.theme,
+      atBody: document.documentElement.dataset.themeAtBody,
+    }));
+    expect(theme).toEqual({ now: "dark", atBody: "dark" });
+    await expect(page.locator("body")).toHaveCSS("background-color", background.dark);
   });
 });

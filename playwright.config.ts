@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = 4321;
+// A dedicated port, never reused, so a `pnpm dev` or `pnpm preview` server on 4321 is never
+// mistaken for the built site.
+const port = 8788;
 const baseURL = `http://127.0.0.1:${port}`;
 
 // Tests run against `wrangler dev` serving the already-built dist/, so redirects, the 404 page
@@ -19,7 +21,7 @@ export default defineConfig({
   webServer: {
     command: `pnpm exec wrangler dev --port ${port} --ip 127.0.0.1`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 60_000,
     env: { WRANGLER_SEND_METRICS: "false" },
   },
