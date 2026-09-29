@@ -297,10 +297,11 @@ stage_cloudflare_token() {
   ask CLOUDFLARE_ACCOUNT_ID "Paste the account ID:"
   write_env CLOUDFLARE_ACCOUNT_ID "$CLOUDFLARE_ACCOUNT_ID"
   if [[ -n "$CLOUDFLARE_API_TOKEN" ]]; then
-    verify=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+    # The header goes in on stdin so the token never appears in the process list.
+    verify=$(printf 'Authorization: Bearer %s\n' "$CLOUDFLARE_API_TOKEN" | curl -s --header @- \
       "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/tokens/verify" || true)
     if [[ "$verify" != *'"success":true'* ]]; then
-      verify=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+      verify=$(printf 'Authorization: Bearer %s\n' "$CLOUDFLARE_API_TOKEN" | curl -s --header @- \
         "https://api.cloudflare.com/client/v4/user/tokens/verify" || true)
     fi
     if [[ "$verify" == *'"status":"active"'* ]]; then
