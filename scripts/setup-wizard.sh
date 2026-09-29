@@ -324,10 +324,13 @@ stage_first_deploy() {
   stage "Create the Worker with a one-off deploy"
   say "The CI token can deploy an existing Worker but cannot create one."
   say "This deploy uses your own Cloudflare login to create '$WORKER_NAME' on workers.dev."
-  whoami_out=$(env -u CLOUDFLARE_API_TOKEN pnpm exec wrangler whoami 2>&1 || true)
-  if [[ "$whoami_out" == *"not authenticated"* ]]; then
-    say "wrangler is not logged in; a browser window will ask you to authorise it."
+  # whoami exits non-zero when logged out or when the stored login has expired. Log in here,
+  # interactively, because the deploy below pipes through tee and wrangler can't prompt there.
+  if ! env -u CLOUDFLARE_API_TOKEN pnpm exec wrangler whoami >/dev/null 2>&1; then
+    say "wrangler is not logged in (or the login expired); a browser window will ask you to authorise it."
     run env -u CLOUDFLARE_API_TOKEN pnpm exec wrangler login
+    env -u CLOUDFLARE_API_TOKEN pnpm exec wrangler whoami >/dev/null 2>&1 \
+      || { warn "wrangler still isn't logged in; run 'pnpm exec wrangler login' and rerun this stage."; exit 1; }
   fi
   if confirm "Install, build and run 'wrangler deploy' now?"; then
     deploy_log=$(mktemp)
