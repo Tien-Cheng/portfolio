@@ -3,6 +3,7 @@ import { Font } from "astro:assets";
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
 import { site } from "../data/site";
+import { serializeJsonLd } from "../lib/json-ld";
 import { publicPath } from "../lib/paths";
 import "../styles/global.css";
 
@@ -60,7 +61,7 @@ const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
     } catch {}
     </script>
 
-    {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
+    {jsonLd && <script type="application/ld+json" is:inline set:html={serializeJsonLd(jsonLd)} />}
 
     {analyticsToken && (
   <script
