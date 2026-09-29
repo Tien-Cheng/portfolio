@@ -44,6 +44,15 @@ describe("renderInline", () => {
     );
   });
 
+  it("never applies bold inside an href", () => {
+    expect(renderInline("[x](https://a.test/**path**)")).toBe(
+      '<a href="https://a.test/**path**">x</a>',
+    );
+    expect(renderInline("**a** [**b**](https://a.test/**c**) **d**")).toBe(
+      '<strong>a</strong> <a href="https://a.test/**c**"><strong>b</strong></a> <strong>d</strong>',
+    );
+  });
+
   it("escapes HTML inside bold text", () => {
     expect(renderInline("**<script>**")).toBe("<strong>&lt;script&gt;</strong>");
   });

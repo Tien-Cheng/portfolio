@@ -19,8 +19,21 @@ export function escapeHtml(text: string): string {
 const LINK = /\[([^\]]+)\]\((https:\/\/[^\s)]+)\)/g;
 const BOLD = /\*\*(.+?)\*\*/g;
 
+const bold = (text: string) => text.replace(BOLD, "<strong>$1</strong>");
+
+/**
+ * Links are found first; bold is then applied only to the text between them and to link labels,
+ * never to an href.
+ */
 export function renderInline(text: string): string {
-  return escapeHtml(text)
-    .replace(LINK, (_, label: string, href: string) => `<a href="${href}">${label}</a>`)
-    .replace(BOLD, "<strong>$1</strong>");
+  const escaped = escapeHtml(text);
+  let out = "";
+  let last = 0;
+  for (const match of escaped.matchAll(LINK)) {
+    const [whole, label = "", href = ""] = match;
+    out += bold(escaped.slice(last, match.index));
+    out += `<a href="${href}">${bold(label)}</a>`;
+    last = match.index + whole.length;
+  }
+  return out + bold(escaped.slice(last));
 }
