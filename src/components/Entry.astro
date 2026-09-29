@@ -1,0 +1,22 @@
+---
+import OrgRole from "./OrgRole.astro";
+
+// A CV entry: "Org, role" with dates on the right, then whatever the slot holds (usually Bullets).
+interface Props {
+  org: string;
+  role: string;
+  dates: string;
+  /** Education rows sit a little tighter than roles with bullet lists. */
+  tight?: boolean;
+}
+
+const { org, role, dates, tight = false } = Astro.props;
+---
+
+<div class:list={["flex flex-col border-t border-rule py-5", tight ? "gap-1" : "gap-2"]}>
+  <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+    <h3><OrgRole org={org} role={role} /></h3>
+    <p class="text-meta text-faint tabular-nums">{dates}</p>
+  </div>
+  <slot />
+</div>

@@ -1,7 +1,76 @@
 ---
+import Bullets from "../components/Bullets.astro";
+import Entry from "../components/Entry.astro";
+import Row from "../components/Row.astro";
+import Section from "../components/Section.astro";
+import { leadership, site } from "../data/site";
 import Base from "../layouts/Base.astro";
+import { formatRange } from "../lib/dates";
+import { renderInline } from "../lib/inline";
+import { awards, degreeTitle, education, educationNote, experience, skills } from "../lib/resume";
+
+// "ML/LLM" → "ML / LLM", so long group names can wrap in the narrow label column.
+const skillLabel = (label: string) => label.replace(/\s*\/\s*/g, " / ");
 ---
 
-<Base title="cv">
-  <p>TODO: cv</p>
+<Base
+  title="CV"
+  description={`Curriculum vitae of ${site.name}: experience, education, leadership, awards and skills.`}
+>
+  <div class="flex flex-col gap-14">
+    <header class="flex flex-col gap-2.5">
+      <h1 class="text-title font-semibold tracking-[-0.01em]">Curriculum vitae</h1>
+      <ul class="flex flex-wrap gap-x-5 gap-y-1.5 text-base text-muted">
+        <li>{site.location}</li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href={site.links.linkedin}>LinkedIn</a></li>
+        <li><a href={site.links.github}>GitHub</a></li>
+        <li>
+          <a href={site.resumePdf} download type="application/pdf">
+            PDF<span aria-hidden="true">{" ↓"}</span>
+          </a>
+        </li>
+      </ul>
+    </header>
+
+    <Section label="Experience">
+      {experience.map((w) => (
+  <Entry org={w.company} role={w.position} dates={formatRange(w)}>
+    <Bullets items={w.highlights ?? []} />
+  </Entry>
+))}
+    </Section>
+
+    <Section label="Education">
+      {education.map((e) => (
+  <Entry org={e.institution} role={degreeTitle(e)} dates={formatRange(e)} tight>
+    {e.highlights && <p class="text-base text-pretty text-ink2">{educationNote(e)}</p>}
+  </Entry>
+))}
+    </Section>
+
+    <Section label="Leadership">
+      {leadership.map((l) => (
+  <Entry org={l.org} role={l.role} dates={l.dates}>
+    <Bullets items={l.points} />
+  </Entry>
+))}
+    </Section>
+
+    <Section label="Awards & open source">
+      {awards.map((a) => (
+  <Row aside={a.year} class="text-base">
+    <p class="text-pretty text-ink2" set:html={renderInline(a.text)} />
+  </Row>
+))}
+    </Section>
+
+    <Section label="Skills">
+      {skills.map((s) => (
+  <Row aside={skillLabel(s.label)} wide class="text-base">
+    <p class="text-pretty text-ink2">{s.details}</p>
+  </Row>
+))}
+    </Section>
+  </div>
 </Base>

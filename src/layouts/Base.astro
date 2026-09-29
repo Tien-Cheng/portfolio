@@ -69,9 +69,15 @@ const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
 )}
   </head>
   <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-bg focus:px-2 focus:text-base"
+    >
+      Skip to content
+    </a>
     <div class="mx-auto flex min-h-screen max-w-[620px] flex-col gap-16 px-6 pt-18 pb-24">
       <Nav />
-      <main class="flex flex-1 flex-col gap-16">
+      <main id="main" class="flex flex-1 flex-col gap-16">
         <slot />
       </main>
       <Footer />

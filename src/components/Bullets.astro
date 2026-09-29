@@ -1,0 +1,18 @@
+---
+import { renderInline } from "../lib/inline";
+
+// Bulleted highlights. Items may contain [links](https://…) and **bold**; everything else is escaped.
+interface Props {
+  items: readonly string[];
+}
+
+const { items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <ul class="flex list-disc flex-col gap-1.5 pl-[18px] text-base leading-[1.6] text-ink2">
+    {items.map((item) => (
+      <li class="pl-1 text-pretty" set:html={renderInline(item)} />
+    ))}
+  </ul>
+)}

@@ -49,6 +49,18 @@
   --color-rule: var(--rule);
   --color-panel: var(--panel);
   --font-body: var(--font-serif);
+
+  /* The prototype sets sizes only and lets the 1.65 body line-height carry through. */
+  --text-sm: 14px;
+  --text-sm--line-height: 1.65;
+  --text-meta: 15px;
+  --text-meta--line-height: 1.65;
+  --text-base: 16px;
+  --text-base--line-height: 1.65;
+  --text-lede: 20px;
+  --text-lede--line-height: 1.55;
+  --text-title: 32px;
+  --text-title--line-height: 1.2;
 }
 
 @layer base {
@@ -67,6 +79,7 @@
 
   a {
     color: inherit;
+    text-decoration-line: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
   }
