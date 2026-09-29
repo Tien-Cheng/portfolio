@@ -29,7 +29,7 @@ The contract between the repos is `src/lib/resume-schema.ts` (Zod 4 via `astro/z
 ## Markup and styling
 
 - Theme = CSS-variable swap. Tokens live in `src/styles/global.css` (light on `:root`; dark from `prefers-color-scheme` unless `data-theme="light"`, or forced by `data-theme="dark"`) and reach Tailwind via `@theme inline` as `bg ink ink2 muted faint rule panel`. Style with those tokens; the theme follows automatically. The inline `<head>` script in `src/layouts/Base.astro` applies a stored theme before first paint, so it stays inline and in `<head>`.
-- Astro 7 collapses whitespace between elements into a space, so a line break before a comma renders "TikTok , Role". Keep punctuation on the same line as the preceding element (see `OrgRole.astro`) and write spaces explicitly as `{" "}` (e.g. before " ↗", " →").
+- Astro 7 collapses whitespace between elements into a space, so a line break before a comma renders "TikTok , Role". Keep punctuation on the same line as the preceding element and write spaces explicitly as `{" "}` (e.g. before " ↗", " →").
 - Render resume bullets (`[text](https://…)`, `**bold**`) through `renderInline()` in `src/lib/inline.ts`, and JSON-LD through `serializeJsonLd()` in `src/lib/json-ld.ts`; both escape first.
 - Faint text sits just above WCAG AA (≈4.59:1 light). The axe suite checks both themes at 375 and 1280px, so re-run e2e after any colour change.
 - Brand SVGs are outlined glyphs. To regenerate: `uv run --no-project --with 'fonttools[woff]' --with uharfbuzz python scripts/brand/build_glyphs.py`, then `pnpm gen:brand`.

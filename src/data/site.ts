@@ -24,6 +24,15 @@ export const intro = [
   "I've co-founded two small companies, built an LLM exam-marking platform during national service, and shipped MLOps tooling at DSTA. Right now I'm a backend intern at TikTok, president of RC4Entre, and on the NUS Hackers coreteam.",
 ] as const;
 
+/**
+ * Start years for education entries whose résumé dates carry only an end ("Expected 2029", or an
+ * end date alone), so the index can show a span. A start date in the résumé itself takes precedence.
+ */
+export const educationStartYears: Readonly<Record<string, number>> = {
+  "National University of Singapore": 2025,
+  "Singapore Polytechnic": 2020,
+};
+
 /** One-line summaries for the index Work list, keyed by the résumé's `company`. */
 export const workSummaries: Readonly<Record<string, string>> = {
   TikTok: "Backend work on content moderation services.",

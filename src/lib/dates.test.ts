@@ -68,7 +68,7 @@ describe("formatRange (CV)", () => {
 
 describe("formatSpan (index)", () => {
   it("leaves ongoing spans open", () => {
-    expect(formatSpan({ start_date: "2026-07-27", end_date: "present" })).toBe("2026 —");
+    expect(formatSpan({ start_date: "2026-07-27", end_date: "present" })).toBe("2026–now");
   });
 
   it("shows a single year for same-year ranges", () => {
@@ -76,16 +76,34 @@ describe("formatSpan (index)", () => {
   });
 
   it("abbreviates the end year", () => {
-    expect(formatSpan({ start_date: "2024-05", end_date: "2025-07" })).toBe("2024 — 25");
-    expect(formatSpan({ start_date: "2022-09", end_date: "2023-02" })).toBe("2022 — 23");
+    expect(formatSpan({ start_date: "2024-05", end_date: "2025-07" })).toBe("2024–25");
+    expect(formatSpan({ start_date: "2022-09", end_date: "2023-02" })).toBe("2022–23");
   });
 
   it("keeps the full end year across centuries", () => {
-    expect(formatSpan({ start_date: "1999", end_date: "2001" })).toBe("1999 — 2001");
+    expect(formatSpan({ start_date: "1999", end_date: "2001" })).toBe("1999–2001");
   });
 
-  it("marks expected dates as open-start", () => {
-    expect(formatSpan({ date: "Expected 2029" })).toBe("— 2029");
+  it("marks expected dates without a known start", () => {
+    expect(formatSpan({ date: "Expected 2029" })).toBe("Exp. 2029");
+  });
+
+  it("uses a supplied start year for expected and end-only entries", () => {
+    expect(formatSpan({ date: "Expected 2029" }, 2025)).toBe("2025–29");
+    expect(formatSpan({ end_date: "2023-03" }, 2020)).toBe("2020–23");
+  });
+
+  it("prefers the entry's own start over a supplied one", () => {
+    expect(formatSpan({ start_date: "2022-09", end_date: "2023-02" }, 2019)).toBe("2022–23");
+  });
+
+  it("never uses an em dash", () => {
+    for (const e of [
+      { start_date: "2026-07", end_date: "present" },
+      { start_date: "2024-05", end_date: "2025-07" },
+    ]) {
+      expect(formatSpan(e)).not.toContain("—");
+    }
   });
 
   it("uses the year from other free text", () => {
