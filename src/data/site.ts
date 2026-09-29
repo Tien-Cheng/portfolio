@@ -60,7 +60,7 @@ export const projects: readonly Project[] = [
   {
     name: "AI App Store",
     year: "2022",
-    href: "https://github.com/DinoHub/appstore-ai",
+    href: "https://dinohub.github.io/appstore-ai/",
     blurb:
       "Open-source hub for publishing model cards and deploying models as services. Built at DSTA with Vue and FastAPI.",
   },
