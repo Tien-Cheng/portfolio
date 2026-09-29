@@ -20,7 +20,7 @@ export const site = {
 
 /** Index intro; the second paragraph renders muted. */
 export const intro = [
-  "I study computer science at the National University of Singapore and build applied ML systems: search, evaluation, and the plumbing that keeps models honest in production.",
+  "I study computer science at NUS and build ML systems, mostly the parts that decide whether a model is actually good enough: benchmarks, evaluation pipelines, and monitoring once it's live.",
   "I've co-founded two small companies, built an LLM exam-marking platform during national service, and shipped MLOps tooling at DSTA. Right now I'm a backend intern at TikTok, president of RC4Entre, and on the NUS Hackers coreteam.",
 ] as const;
 
@@ -50,12 +50,6 @@ export const projects: readonly Project[] = [
     href: "/projects/owlshield",
     blurb:
       "An LLM safety firewall that screens prompts and outputs for attacks and harmful content. First place, NSCC HPC Innovation Competition (university category).",
-  },
-  {
-    name: "Garak × LiteLLM",
-    year: "2024",
-    href: "https://github.com/NVIDIA/garak/pull/572",
-    blurb: "Contributed the LiteLLM integration to NVIDIA's open-source LLM vulnerability scanner.",
   },
   {
     name: "AI App Store",
@@ -133,7 +127,7 @@ export const siteAwards: readonly Award[] = [
     text: "Best Junior Hack, NTU MLDA Deep Learning Week Hackathon, for Project Cactus.",
   },
   { year: "2020", text: "Champion, Collegial Artificial Intelligence Innovation Competition." },
-  { year: "—", text: "DSTA Polytechnic Digital Scholarship." },
+  { year: "2020", text: "DSTA Polytechnic Digital Scholarship." },
 ];
 
 /**
