@@ -20,7 +20,7 @@ export const site = {
 
 /** Index intro; the second paragraph renders muted. */
 export const intro = [
-  "I study computer science at NUS and build ML systems, mostly the parts that decide whether a model is actually good enough: benchmarks, evaluation pipelines, and monitoring once it's live.",
+  "I study computer science at NUS and build software around machine learning: search engines, LLM applications, and the backends and infrastructure that run them in production.",
   "I've co-founded two small companies, built an LLM exam-marking platform during national service, and shipped MLOps tooling at DSTA. Right now I'm a backend intern at TikTok, president of RC4Entre, and on the NUS Hackers coreteam.",
 ] as const;
 
