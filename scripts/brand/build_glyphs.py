@@ -107,11 +107,24 @@ def centred_monogram(box: float, fit: float) -> str:
 
 def favicon() -> str:
     d = centred_monogram(64, 0.64)
+    # The CSS is laid out the way Biome formats it, so `pnpm format` leaves the file unchanged.
     return f"""{HEADER}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
 <title>{TITLE}</title>
 <style>
-.bg{{fill:{LIGHT["bg"]}}}.fg{{fill:{LIGHT["ink"]}}}
-@media (prefers-color-scheme:dark){{.bg{{fill:{DARK["bg"]}}}.fg{{fill:{DARK["ink"]}}}}}
+.bg {{
+  fill: {LIGHT["bg"]};
+}}
+.fg {{
+  fill: {LIGHT["ink"]};
+}}
+@media (prefers-color-scheme: dark) {{
+  .bg {{
+    fill: {DARK["bg"]};
+  }}
+  .fg {{
+    fill: {DARK["ink"]};
+  }}
+}}
 </style>
 <rect class="bg" width="64" height="64" rx="14"/>
 <path class="fg" d="{d}"/>
