@@ -24,3 +24,6 @@ playwright-report/
 
 # private source material, never commit
 LINKEDIN.txt
+
+# agent worktrees
+.claude/worktrees/

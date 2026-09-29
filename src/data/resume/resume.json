@@ -62,10 +62,10 @@
       },
       {
         "company": "Digital and Intelligence Service",
-        "position": "Software Developer, National Service",
+        "position": "Instructor and Software Developer, National Service",
         "location": "Singapore",
-        "start_date": "2023-05",
-        "end_date": "2025-08",
+        "start_date": "2024-05",
+        "end_date": "2025-07",
         "highlights": [
           "Built an LLM-powered exam-marking platform with custom RAG over exam materials that reduced instructor grading time by over 50% in an air-gapped environment.",
           "Improved grader accuracy and robustness by benchmarking prompts and automating prompt optimization with DSPy and open-source data.",

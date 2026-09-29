@@ -7,11 +7,14 @@ import { z } from "astro/zod";
  * sync job validates against before it pushes a snapshot.
  */
 
+// RenderCV accepts a bare year as a number (`end_date: 2029`); normalise every date to a string.
+const DateValue = z.union([z.string(), z.int()]).transform(String);
+
 const Dated = {
   location: z.string().optional(),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
-  date: z.string().optional(),
+  start_date: DateValue.optional(),
+  end_date: DateValue.optional(),
+  date: DateValue.optional(),
   highlights: z.array(z.string()).optional(),
 };
 
