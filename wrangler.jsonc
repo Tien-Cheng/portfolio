@@ -12,5 +12,7 @@
   },
   // Worker Previews need this block, even when empty. Previews run per pull request in CI.
   "previews": {},
+  // Gives each preview a workers.dev URL. Takes effect once `wrangler deploy` runs from main.
+  "preview_urls": true,
   "routes": [{ "pattern": "tiencheng.dev", "custom_domain": true }]
 }

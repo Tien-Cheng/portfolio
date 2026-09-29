@@ -186,8 +186,13 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.preview.outputs.preview-deployment-url }}
           SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          body="$(printf '**Preview:** %s\n\nThis deployment (%s): %s\n' \
-            "$PREVIEW_URL" "${SHA:0:7}" "$DEPLOYMENT_URL")"
+          if [[ -z "$PREVIEW_URL" ]]; then
+            echo "::warning::wrangler returned no preview URL; check preview_urls in wrangler.jsonc has been deployed from main."
+            body="$(printf '**Preview:** deployed (%s), but Cloudflare returned no URL; preview_urls must be deployed from main first.\n' "${SHA:0:7}")"
+          else
+            body="$(printf '**Preview:** %s\n\nThis deployment (%s): %s\n' \
+              "$PREVIEW_URL" "${SHA:0:7}" "$DEPLOYMENT_URL")"
+          fi
           gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
             --edit-last --create-if-none --body "$body"
 
