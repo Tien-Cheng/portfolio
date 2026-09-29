@@ -1,0 +1,4 @@
+# Files under /_astro/ are content-hashed by Astro, so they can be cached for good.
+# Everything else (HTML, the resume PDF, icons) keeps Cloudflare's revalidate-on-every-request default.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -6,7 +6,8 @@ export default defineConfig({
   site: "https://tiencheng.dev",
   // Cloudflare serves /cv from cv.html; keep URLs, canonicals and the sitemap slash-free.
   trailingSlash: "never",
-  build: { format: "file" },
+  // Inline the (small) stylesheet so first paint does not wait on a CSS request.
+  build: { format: "file", inlineStylesheets: "always" },
   compressHTML: true,
   integrations: [sitemap({ filter: (page) => !page.endsWith("/404") })],
   fonts: [
