@@ -5,6 +5,16 @@ name: CI
 # rebuild and redeploy (for example after changing the PUBLIC_CF_ANALYTICS_TOKEN variable).
 # preview publishes a Worker Preview per pull request; preview-cleanup deletes it on close.
 # See docs/adr/0002-workers-via-actions.md.
+#
+# Concurrency:
+# - main (push or manual run) shares one group and is never cancelled, so a deploy is never cut
+#   off. At most one newer run waits behind the one in progress.
+# - Pull request runs for opened/synchronize/reopened share pr-<n> and supersede each other.
+# - A closed event gets a group of its own. For a merged PR github.ref is the base branch, so it
+#   must not share a ref-based group with main. Nothing cancels it.
+# - The preview and preview-cleanup jobs also share preview-pr-<n> without cancellation, so cleanup
+#   waits for an in-flight preview to finish instead of racing it. The preview job re-checks that
+#   the PR is still open before publishing.
 
 on:
   push:
@@ -17,9 +27,15 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
-  # Supersede stale PR runs; let every push to main finish so deploys are never cut off.
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: >-
+    ${{
+      github.event_name != 'pull_request'
+        && (github.ref == 'refs/heads/main' && 'deploy-production' || format('ci-{0}', github.ref))
+        || github.event.action == 'closed'
+          && format('pr-{0}-closed-{1}', github.event.pull_request.number, github.run_id)
+          || format('pr-{0}', github.event.pull_request.number)
+    }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
 
 env:
   WRANGLER_SEND_METRICS: "false"
@@ -78,9 +94,7 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    concurrency:
-      group: deploy-production
-      cancel-in-progress: false
+    # Serialised by the workflow-level deploy-production group above.
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -111,6 +125,9 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    concurrency:
+      group: preview-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
     permissions:
       contents: read
       pull-requests: write
@@ -122,25 +139,38 @@ jobs:
       - name: Skip when Cloudflare secrets are missing
         if: env.HAS_CLOUDFLARE != 'true'
         run: echo "::notice::CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is not set; skipping the preview."
-      - if: env.HAS_CLOUDFLARE == 'true'
+      # The event payload always says "open"; ask again in case the PR closed while check ran.
+      - name: Check the pull request is still open
+        id: pr
+        if: env.HAS_CLOUDFLARE == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          state="$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json state --jq .state)"
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+          if [[ "$state" != "OPEN" ]]; then
+            echo "::notice::PR #$PR_NUMBER is $state; skipping the preview."
+          fi
+      - if: steps.pr.outputs.state == 'OPEN'
         uses: actions/checkout@v7
-      - if: env.HAS_CLOUDFLARE == 'true'
+      - if: steps.pr.outputs.state == 'OPEN'
         uses: pnpm/action-setup@v6
-      - if: env.HAS_CLOUDFLARE == 'true'
+      - if: steps.pr.outputs.state == 'OPEN'
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - if: env.HAS_CLOUDFLARE == 'true'
+      - if: steps.pr.outputs.state == 'OPEN'
         run: pnpm install --frozen-lockfile
-      - if: env.HAS_CLOUDFLARE == 'true'
+      - if: steps.pr.outputs.state == 'OPEN'
         uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist
       - name: Deploy Worker Preview
         id: preview
-        if: env.HAS_CLOUDFLARE == 'true'
+        if: steps.pr.outputs.state == 'OPEN'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -148,7 +178,7 @@ jobs:
           command: preview --name ${{ env.PREVIEW_NAME }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
       - name: Comment the preview URL
-        if: env.HAS_CLOUDFLARE == 'true'
+        if: steps.pr.outputs.state == 'OPEN'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -169,6 +199,10 @@ jobs:
       && github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Shared with the preview job: waits for an in-flight preview, and is never cancelled.
+    concurrency:
+      group: preview-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
     env:
       HAS_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
       PREVIEW_NAME: pr-${{ github.event.pull_request.number }}
@@ -186,10 +220,28 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Delete Worker Preview
         if: env.HAS_CLOUDFLARE == 'true'
-        # A PR whose preview was never created (secrets were added later) has nothing to delete.
-        continue-on-error: true
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: preview delete --name ${{ env.PREVIEW_NAME }} --skip-confirmation
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        # A PR whose preview was never created (secrets were added later, or the PR closed before
+        # the preview ran) has nothing to delete: that counts as success. Anything else is retried
+        # with backoff and then fails the job.
+        run: |
+          for attempt in 1 2 3 4; do
+            if output="$(pnpm exec wrangler preview delete --name "$PREVIEW_NAME" --skip-confirmation 2>&1)"; then
+              echo "$output"
+              exit 0
+            fi
+            echo "$output"
+            if grep -qiE 'not found|does not exist|no preview|status: 404' <<<"$output"; then
+              echo "::notice::Preview $PREVIEW_NAME does not exist; nothing to delete."
+              exit 0
+            fi
+            if (( attempt < 4 )); then
+              delay=$(( 5 * 2 ** (attempt - 1) ))
+              echo "::warning::Deleting $PREVIEW_NAME failed (attempt $attempt); retrying in ${delay}s."
+              sleep "$delay"
+            fi
+          done
+          echo "::error::Could not delete Worker Preview $PREVIEW_NAME after 4 attempts."
+          exit 1
