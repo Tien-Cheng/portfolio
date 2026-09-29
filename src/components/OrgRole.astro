@@ -1,0 +1,11 @@
+---
+// "Org, role": kept on one line so no whitespace lands before the comma.
+interface Props {
+  org: string;
+  role: string;
+}
+
+const { org, role } = Astro.props;
+---
+
+<span class="font-semibold">{org}</span><span class="text-muted">, {role}</span>

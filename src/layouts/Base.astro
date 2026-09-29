@@ -1,0 +1,90 @@
+---
+import { Font } from "astro:assets";
+import Footer from "../components/Footer.astro";
+import Nav from "../components/Nav.astro";
+import { site } from "../data/site";
+import { serializeJsonLd } from "../lib/json-ld";
+import { publicPath } from "../lib/paths";
+import "../styles/global.css";
+
+interface Props {
+  /** Page title; the site name is appended unless this is the home page. */
+  title?: string;
+  description?: string;
+  /** Extra JSON-LD object for this page. */
+  jsonLd?: Record<string, unknown>;
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
+}
+
+const { title, description = site.description, jsonLd, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : site.title;
+const canonical = new URL(publicPath(Astro.url.pathname), Astro.site);
+const ogImage = new URL("/og.png", Astro.site);
+const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{fullTitle}</title>
+    <meta name="description" content={description}>
+    {noindex ? <meta name="robots" content="noindex"> : <link rel="canonical" href={canonical}>}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="sitemap" href="/sitemap-index.xml">
+    <meta name="theme-color" content="#fbfaf6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content={site.name}>
+    <meta property="og:title" content={fullTitle}>
+    <meta property="og:description" content={description}>
+    <meta property="og:url" content={canonical}>
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={fullTitle}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={ogImage}>
+
+    <Font cssVariable="--font-serif" preload={[{ style: "normal" }]} />
+
+    <script is:inline>
+    // Apply a stored theme before first paint so there is no flash.
+    try {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch {}
+    </script>
+
+    {jsonLd && <script type="application/ld+json" is:inline set:html={serializeJsonLd(jsonLd)} />}
+
+    {analyticsToken && (
+  <script
+    defer
+    is:inline
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={JSON.stringify({ token: analyticsToken })}
+  />
+)}
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-bg focus:px-2 focus:text-base"
+    >
+      Skip to content
+    </a>
+    <div class="mx-auto flex min-h-screen max-w-[620px] flex-col gap-16 px-6 pt-18 pb-24">
+      <Nav />
+      <main id="main" class="flex flex-1 flex-col gap-16">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

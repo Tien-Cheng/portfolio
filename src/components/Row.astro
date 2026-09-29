@@ -1,0 +1,26 @@
+---
+// One ruled row: a narrow date/label column and the content beside it.
+interface Props {
+  /** Text in the left column (a year, a span, a skill group). */
+  aside: string;
+  /** Left column width; 96px matches the index and awards, 150px the skills table. */
+  wide?: boolean;
+  class?: string;
+}
+
+const { aside, wide = false, class: className } = Astro.props;
+---
+
+{/* 72px on phones is deliberate: 96px squeezes the content column at 375px. */}
+<div
+  class:list={[
+  "grid gap-4 border-t border-rule",
+  wide
+    ? "grid-cols-[minmax(0,112px)_minmax(0,1fr)] py-3 sm:grid-cols-[150px_minmax(0,1fr)]"
+    : "grid-cols-[72px_minmax(0,1fr)] py-3.5 sm:grid-cols-[96px_minmax(0,1fr)]",
+  className,
+]}
+>
+  <div class:list={["text-faint tabular-nums", wide ? "" : "pt-0.5 text-meta"]}>{aside}</div>
+  <div class="flex min-w-0 flex-col gap-0.5"><slot /></div>
+</div>

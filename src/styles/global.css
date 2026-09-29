@@ -1,3 +1,100 @@
-.time-line-container>div:last-child .education__time>.education__line {
-    display: none;
+@import "tailwindcss";
+
+/* Palette from the Claude Design prototype. Light is the default; dark applies when the
+   system prefers it (unless the visitor forced light) or when the visitor forced dark. */
+:root {
+  --bg: #fbfaf6;
+  --ink: #1c1b19;
+  --ink2: #3d3b37;
+  --muted: #5b5953;
+  --faint: #767269;
+  --rule: #e6e3dc;
+  --panel: #f1efe8;
+  --sel: #e8e2cf;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161513;
+    --ink: #ece9e2;
+    --ink2: #d2cec5;
+    --muted: #aca79d;
+    --faint: #8f8a80;
+    --rule: #2d2b27;
+    --panel: #201f1c;
+    --sel: #3d392e;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #161513;
+  --ink: #ece9e2;
+  --ink2: #d2cec5;
+  --muted: #aca79d;
+  --faint: #8f8a80;
+  --rule: #2d2b27;
+  --panel: #201f1c;
+  --sel: #3d392e;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-rule: var(--rule);
+  --color-panel: var(--panel);
+  --font-body: var(--font-serif);
+
+  /* The prototype sets sizes only and lets the 1.65 body line-height carry through. */
+  --text-sm: 14px;
+  --text-sm--line-height: 1.65;
+  --text-meta: 15px;
+  --text-meta--line-height: 1.65;
+  --text-base: 16px;
+  --text-base--line-height: 1.65;
+  --text-lede: 20px;
+  --text-lede--line-height: 1.55;
+  --text-title: 32px;
+  --text-title--line-height: 1.2;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 18px / 1.65 var(--font-serif);
+    font-optical-sizing: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    color: var(--ink);
+    text-decoration-color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--sel);
+  }
 }

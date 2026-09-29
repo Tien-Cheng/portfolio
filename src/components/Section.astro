@@ -1,0 +1,14 @@
+---
+// A labelled block of ruled rows. The label is the section's h2, styled as a quiet italic caption.
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+const id = `section-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<section aria-labelledby={id} class="flex flex-col">
+  <h2 id={id} class="pb-2.5 text-base font-normal text-faint italic">{label}</h2>
+  <slot />
+</section>

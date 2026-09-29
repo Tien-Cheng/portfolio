@@ -1,22 +1,29 @@
 # build output
 dist/
-.cache
+.astro/
+.wrangler/
+
 # dependencies
 node_modules/
 
 # logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+*.log
 
-
-# environment variables
+# env
 .env
-.env.production
+.env.*
+!.env.example
+.dev.vars
 
-# macOS-specific files
+# test output
+test-results/
+playwright-report/
+
+# os
 .DS_Store
 
-# Astro
-.astro/
+# private source material, never commit
+LINKEDIN.txt
+
+# agent worktrees
+.claude/worktrees/

@@ -1,0 +1,110 @@
+---
+import { site } from "../../data/site";
+import Base from "../../layouts/Base.astro";
+
+const lede =
+  "A firewall that sits between applications and an LLM, screening prompts for attacks and responses for harmful output.";
+
+const facts = [
+  { term: "Year", detail: "2024" },
+  { term: "Team", detail: "Four, built alongside national service" },
+  { term: "My part", detail: "Full-stack developer" },
+  { term: "Stack", detail: "Svelte and Supabase, with Python for evaluation" },
+  {
+    term: "Result",
+    detail: "1st place, NSCC HPC Innovation Competition 2023, university category",
+  },
+];
+
+const links = [
+  { label: "Garak PR", href: "https://github.com/NVIDIA/garak/pull/572" },
+  { label: "Competition", href: "https://www.nscc.sg" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: "OwlShield",
+  description: lede,
+  dateCreated: "2024",
+  author: { "@type": "Person", name: site.name, url: Astro.site?.href },
+};
+---
+
+<Base title="OwlShield" description={lede} jsonLd={jsonLd}>
+  <article class="flex flex-col gap-12">
+    <header class="flex flex-col gap-3.5">
+      <a
+        href="/#section-projects"
+        class="self-start text-meta text-faint no-underline hover:underline"
+      >
+        <span aria-hidden="true">←{" "}</span>Projects
+      </a>
+      <h1 class="text-title font-semibold tracking-[-0.01em]">OwlShield</h1>
+      <p class="text-lede text-pretty text-ink2">{lede}</p>
+    </header>
+
+    <dl
+      class="grid grid-cols-[minmax(0,96px)_minmax(0,1fr)] gap-x-4 gap-y-2.5 border-y border-rule py-[18px] text-base"
+    >
+      {facts.map((f) => (
+  <>
+    <dt class="text-faint">{f.term}</dt>
+    <dd>{f.detail}</dd>
+  </>
+))}
+    </dl>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="text-base text-faint italic">The problem</h2>
+      <p class="text-pretty">
+        Teams shipping LLM features have little between the user and the model. Prompt injection and
+        jailbreaks go straight in; unsafe or leaked content comes straight out. Most mitigations are
+        baked into each application, so every team rebuilds them.
+      </p>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="text-base text-faint italic">How it works</h2>
+      <p class="text-pretty">
+        OwlShield runs as a proxy in front of the model. Each request passes through input checks
+        before it reaches the LLM, and each response through output checks before it reaches the
+        user. Policies are configured once and apply to every app behind the proxy, which gives
+        teams one place to keep their apps safe and in line with AI regulations.
+      </p>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="text-base text-faint italic">Testing it</h2>
+      <p class="text-pretty">
+        To measure what OwlShield caught, we wanted to run Garak, NVIDIA's open-source LLM
+        vulnerability scanner, against it. I wrote a LiteLLM integration for Garak so its probes
+        could reach OwlShield, and contributed it upstream; it was merged in April 2024.
+      </p>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="text-base text-faint italic">The competition</h2>
+      <p class="text-pretty">
+        We built OwlShield for the HPC Innovation Competition 2023, run by Singapore's National
+        Supercomputing Centre (NSCC). The work ran from January to July 2024, and the team won first
+        place in the university category.
+      </p>
+    </section>
+
+    <ul class="flex flex-wrap gap-x-5 gap-y-2 pt-2 text-base">
+      {links.map((l) => (
+  <li>
+    <a href={l.href}>{l.label}</a>
+  </li>
+))}
+    </ul>
+
+    <a
+      href="/#section-projects"
+      class="self-start text-meta text-faint no-underline hover:underline"
+    >
+      <span aria-hidden="true">←{" "}</span>All projects
+    </a>
+  </article>
+</Base>
