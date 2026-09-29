@@ -15,7 +15,9 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "gen:schema": "tsx scripts/gen-schema.ts",
+    "gen:brand": "tsx scripts/gen-brand.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
