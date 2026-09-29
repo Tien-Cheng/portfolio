@@ -11,6 +11,7 @@ interface Props {
 const { aside, wide = false, class: className } = Astro.props;
 ---
 
+{/* 72px on phones is deliberate: 96px squeezes the content column at 375px. */}
 <div
   class:list={[
   "grid gap-4 border-t border-rule",
