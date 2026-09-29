@@ -1,7 +1,5 @@
 ---
-import OrgRole from "./OrgRole.astro";
-
-// A CV entry: "Org, role" with dates on the right, then whatever the slot holds (usually Bullets).
+// A CV entry: org with dates on the right, the role beneath, then the slot (usually Bullets).
 interface Props {
   org: string;
   role: string;
@@ -15,8 +13,9 @@ const { org, role, dates, tight = false } = Astro.props;
 
 <div class:list={["flex flex-col border-t border-rule py-5", tight ? "gap-1" : "gap-2"]}>
   <div class="flex flex-wrap items-baseline justify-between gap-x-4">
-    <h3><OrgRole org={org} role={role} /></h3>
+    <h3 class="font-semibold">{org}</h3>
     <p class="text-meta text-faint tabular-nums">{dates}</p>
   </div>
+  <p class="-mt-1 text-pretty text-muted">{role}</p>
   <slot />
 </div>

@@ -11,7 +11,10 @@ const items = [
 ---
 
 <nav aria-label="Main" class="flex items-baseline justify-between gap-4 text-base">
-  <a href="/" class="font-semibold no-underline">{site.name}</a>
+  {/* The overview's own heading is the name, so the nav hides it there but keeps its space. */}
+  <a href="/" class:list={["font-semibold no-underline", path === "/" && "invisible"]}
+    >{site.name}</a
+  >
   <div class="flex items-baseline gap-5 text-muted">
     {items.map((item) => {
   const current = path === item.href;

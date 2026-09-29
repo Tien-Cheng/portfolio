@@ -35,7 +35,6 @@ const MONTHS = [
 
 const PRESENT = "present";
 const EN_DASH = "–";
-const EM_DASH = "—";
 
 /** Parses `YYYY`, `YYYY-MM` or `YYYY-MM-DD`; anything else returns undefined. */
 export function parseDate(value: string): PartialDate | undefined {
@@ -115,28 +114,32 @@ export function formatRange(entry: DatedEntry): string {
 }
 
 /**
- * Compact year span for the index: "2026 —", "2025", "2024 — 25", "— 2029", or "2023" for
- * end-only entries.
+ * Compact year span for the index, with a tight en dash: "2026–now", "2025", "2024–25", or a
+ * bare end year. `startYear` supplies a start the entry itself lacks (an end-only or "Expected
+ * 2029" education entry), so those read "2020–23" and "2025–29"; the entry's own start wins.
  */
-export function formatSpan(entry: DatedEntry): string {
+export function formatSpan(entry: DatedEntry, startYear?: number): string {
   const r = resolve(entry);
+  const span = (from: number, to: number) => {
+    if (from === to) return String(to);
+    const sameCentury = Math.floor(from / 100) === Math.floor(to / 100);
+    return `${from}${EN_DASH}${sameCentury ? String(to).slice(-2) : to}`;
+  };
   switch (r.kind) {
     case "none":
       return "";
     case "text": {
       const year = /\b(\d{4})\b/.exec(r.text)?.[1];
       if (!year) return r.text;
-      return /expected/i.test(r.text) ? `${EM_DASH} ${year}` : year;
+      if (startYear !== undefined) return span(startYear, Number(year));
+      return /expected/i.test(r.text) ? `Exp. ${year}` : year;
     }
     case "single":
-      return String(r.date.year);
+      return startYear === undefined ? String(r.date.year) : span(startYear, r.date.year);
     case "range": {
       const { start, end } = r;
-      if (end === PRESENT) return `${start.year} ${EM_DASH}`;
-      if (start.year === end.year) return String(end.year);
-      const sameCentury = Math.floor(start.year / 100) === Math.floor(end.year / 100);
-      const endText = sameCentury ? String(end.year).slice(-2) : String(end.year);
-      return `${start.year} ${EM_DASH} ${endText}`;
+      if (end === PRESENT) return `${start.year}${EN_DASH}now`;
+      return span(start.year, end.year);
     }
   }
 }

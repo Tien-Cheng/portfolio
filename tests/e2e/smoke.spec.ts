@@ -103,6 +103,18 @@ test.describe("CV page", () => {
     expect(pdf.status()).toBe(200);
     expect(pdf.headers()["content-type"]).toContain("application/pdf");
   });
+
+  test("the overview links straight to the resume PDF", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("link", { name: "Resume (PDF)" })).toHaveAttribute("href", pdfPath);
+  });
+});
+
+test("no page shows an em dash", async ({ page }) => {
+  for (const { path } of pages) {
+    await page.goto(path);
+    expect(await page.locator("body").innerText(), path).not.toContain("\u2014");
+  }
 });
 
 test.describe("navigation", () => {

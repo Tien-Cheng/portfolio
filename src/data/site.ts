@@ -20,9 +20,18 @@ export const site = {
 
 /** Index intro; the second paragraph renders muted. */
 export const intro = [
-  "I study computer science at the National University of Singapore and build applied ML systems: search, evaluation, and the plumbing that keeps models honest in production.",
+  "I study computer science at NUS and build software around machine learning: search engines, LLM applications, and the backends and infrastructure that run them in production.",
   "I've co-founded two small companies, built an LLM exam-marking platform during national service, and shipped MLOps tooling at DSTA. Right now I'm a backend intern at TikTok, president of RC4Entre, and on the NUS Hackers coreteam.",
 ] as const;
+
+/**
+ * Start years for education entries whose résumé dates carry only an end ("Expected 2029", or an
+ * end date alone), so the index can show a span. A start date in the résumé itself takes precedence.
+ */
+export const educationStartYears: Readonly<Record<string, number>> = {
+  "National University of Singapore": 2025,
+  "Singapore Polytechnic": 2020,
+};
 
 /** One-line summaries for the index Work list, keyed by the résumé's `company`. */
 export const workSummaries: Readonly<Record<string, string>> = {
@@ -50,12 +59,6 @@ export const projects: readonly Project[] = [
     href: "/projects/owlshield",
     blurb:
       "An LLM safety firewall that screens prompts and outputs for attacks and harmful content. First place, NSCC HPC Innovation Competition (university category).",
-  },
-  {
-    name: "Garak × LiteLLM",
-    year: "2024",
-    href: "https://github.com/NVIDIA/garak/pull/572",
-    blurb: "Contributed the LiteLLM integration to NVIDIA's open-source LLM vulnerability scanner.",
   },
   {
     name: "AI App Store",
@@ -133,7 +136,7 @@ export const siteAwards: readonly Award[] = [
     text: "Best Junior Hack, NTU MLDA Deep Learning Week Hackathon, for Project Cactus.",
   },
   { year: "2020", text: "Champion, Collegial Artificial Intelligence Innovation Competition." },
-  { year: "—", text: "DSTA Polytechnic Digital Scholarship." },
+  { year: "2020", text: "DSTA Polytechnic Digital Scholarship." },
 ];
 
 /**
