@@ -11,8 +11,6 @@
     "html_handling": "drop-trailing-slash"
   },
   // Worker Previews need this block, even when empty. Previews run per pull request in CI.
-  "previews": {}
-  // No routes yet. tiencheng.dev is still attached to the old Pages project. After the domain
-  // moves to this Worker in the dashboard, add:
-  //   "routes": [{ "pattern": "tiencheng.dev", "custom_domain": true }]
+  "previews": {},
+  "routes": [{ "pattern": "tiencheng.dev", "custom_domain": true }]
 }
