@@ -49,6 +49,17 @@ export function parseDate(value: string): PartialDate | undefined {
 
 const isPresent = (value: string | undefined) => value?.trim().toLowerCase() === PRESENT;
 
+const isBlank = (value: string | undefined) => value === undefined || value.trim() === "";
+
+/**
+ * True for an entry that is still running: a start date with no end date, or an end date of
+ * "present" (any case). The CV, the index and the JSON-LD all use this one rule.
+ */
+export function isOngoing(entry: DatedEntry): boolean {
+  if (isPresent(entry.end_date)) return true;
+  return !isBlank(entry.start_date) && isBlank(entry.end_date);
+}
+
 const formatOne = (d: PartialDate) =>
   d.month === undefined ? String(d.year) : `${MONTHS[d.month - 1]} ${d.year}`;
 
@@ -75,6 +86,10 @@ function resolve(entry: DatedEntry): Resolved {
 /**
  * Long form for the CV page: "Jul 2026 – present", "Aug – Dec 2025", "Sep 2022 – Feb 2023",
  * "Expected 2029", or a single "Mar 2023" for end-only entries.
+ *
+ * A range within one year drops the start's year only when both ends have a month
+ * ("Aug – Dec 2025"). With mixed precision each end keeps its own ("2025 – Aug 2025",
+ * "Mar 2025 – 2025"), so no month is ever lost.
  */
 export function formatRange(entry: DatedEntry): string {
   const r = resolve(entry);
@@ -93,7 +108,6 @@ export function formatRange(entry: DatedEntry): string {
         if (start.month !== undefined && end.month !== undefined) {
           return `${MONTHS[start.month - 1]} ${EN_DASH} ${formatOne(end)}`;
         }
-        return String(end.year);
       }
       return `${formatOne(start)} ${EN_DASH} ${formatOne(end)}`;
     }

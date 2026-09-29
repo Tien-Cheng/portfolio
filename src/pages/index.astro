@@ -4,10 +4,10 @@ import Row from "../components/Row.astro";
 import Section from "../components/Section.astro";
 import { intro, projects, site } from "../data/site";
 import Base from "../layouts/Base.astro";
-import { formatSpan } from "../lib/dates";
+import { formatSpan, isOngoing } from "../lib/dates";
 import { degreeTitle, education, educationNote, experience } from "../lib/resume";
 
-const current = experience.find((e) => e.end_date?.toLowerCase() === "present");
+const current = experience.find(isOngoing);
 
 const person = {
   "@context": "https://schema.org",

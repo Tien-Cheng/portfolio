@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatRange, formatSpan, parseDate } from "./dates";
+import { formatRange, formatSpan, isOngoing, parseDate } from "./dates";
 
 describe("parseDate", () => {
   it("parses full dates, year-months and bare years", () => {
@@ -42,6 +42,11 @@ describe("formatRange (CV)", () => {
     expect(formatRange({ start_date: "2020", end_date: "2023" })).toBe("2020 – 2023");
     expect(formatRange({ start_date: "2020", end_date: "2023-03" })).toBe("2020 – Mar 2023");
     expect(formatRange({ start_date: "2021", end_date: "2021" })).toBe("2021");
+  });
+
+  it("keeps each end's precision within one year when only one end has a month", () => {
+    expect(formatRange({ start_date: "2025", end_date: "2025-08" })).toBe("2025 – Aug 2025");
+    expect(formatRange({ start_date: "2025-03", end_date: "2025" })).toBe("Mar 2025 – 2025");
   });
 
   it("passes free-text dates through", () => {
@@ -90,5 +95,25 @@ describe("formatSpan (index)", () => {
 
   it("shows end-only entries as the end year", () => {
     expect(formatSpan({ end_date: "2023-03" })).toBe("2023");
+  });
+});
+
+describe("isOngoing", () => {
+  it("treats a start date with no end date as ongoing", () => {
+    expect(isOngoing({ start_date: "2026-07" })).toBe(true);
+    expect(isOngoing({ start_date: "2026-07", end_date: "" })).toBe(true);
+  });
+
+  it("treats an end date of present as ongoing, in any case", () => {
+    expect(isOngoing({ start_date: "2026-07", end_date: "present" })).toBe(true);
+    expect(isOngoing({ start_date: "2026-07", end_date: "Present" })).toBe(true);
+    expect(isOngoing({ start_date: "2026-07", end_date: " PRESENT " })).toBe(true);
+  });
+
+  it("treats finished and undated entries as not ongoing", () => {
+    expect(isOngoing({ start_date: "2025-08", end_date: "2025-12" })).toBe(false);
+    expect(isOngoing({ end_date: "2023-03" })).toBe(false);
+    expect(isOngoing({ date: "Expected 2029" })).toBe(false);
+    expect(isOngoing({})).toBe(false);
   });
 });
