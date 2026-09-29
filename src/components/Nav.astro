@@ -1,8 +1,9 @@
 ---
 import { site } from "../data/site";
+import { publicPath } from "../lib/paths";
 import ThemeToggle from "./ThemeToggle.astro";
 
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const path = publicPath(Astro.url.pathname);
 const items = [
   { href: "/", label: "Index" },
   { href: "/cv", label: "CV" },

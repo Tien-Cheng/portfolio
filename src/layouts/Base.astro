@@ -3,6 +3,7 @@ import { Font } from "astro:assets";
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
 import { site } from "../data/site";
+import { publicPath } from "../lib/paths";
 import "../styles/global.css";
 
 interface Props {
@@ -11,11 +12,13 @@ interface Props {
   description?: string;
   /** Extra JSON-LD object for this page. */
   jsonLd?: Record<string, unknown>;
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
 }
 
-const { title, description = site.description, jsonLd } = Astro.props;
+const { title, description = site.description, jsonLd, noindex = false } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : site.title;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonical = new URL(publicPath(Astro.url.pathname), Astro.site);
 const ogImage = new URL("/og.png", Astro.site);
 const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
 ---
@@ -27,7 +30,7 @@ const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{fullTitle}</title>
     <meta name="description" content={description}>
-    <link rel="canonical" href={canonical}>
+    {noindex ? <meta name="robots" content="noindex"> : <link rel="canonical" href={canonical}>}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="sitemap" href="/sitemap-index.xml">
