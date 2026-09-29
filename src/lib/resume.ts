@@ -7,13 +7,27 @@ export const resume = ResumeSchema.parse(raw);
 
 export type WorkEntry = Experience & { summary: string | undefined };
 
-export const experience: readonly WorkEntry[] = resume.sections.experience.map((entry) => {
-  const summary = workSummaries[entry.company];
-  if (summary === undefined) {
-    console.warn(`[resume] No work summary in src/data/site.ts for "${entry.company}".`);
-  }
-  return { ...entry, summary };
-});
+/**
+ * Pairs each role with its site-owned work summary, keyed by company. A role without one keeps
+ * `summary: undefined` and logs a warning, so a new job in the résumé never breaks the build.
+ */
+export function joinWorkSummaries(
+  experiences: readonly Experience[],
+  summaries: Readonly<Record<string, string>>,
+): WorkEntry[] {
+  return experiences.map((entry) => {
+    const summary = Object.hasOwn(summaries, entry.company) ? summaries[entry.company] : undefined;
+    if (summary === undefined) {
+      console.warn(`[resume] No work summary in src/data/site.ts for "${entry.company}".`);
+    }
+    return { ...entry, summary };
+  });
+}
+
+export const experience: readonly WorkEntry[] = joinWorkSummaries(
+  resume.sections.experience,
+  workSummaries,
+);
 
 export const education: readonly Education[] = resume.sections.education;
 
@@ -34,22 +48,29 @@ export function educationNote(entry: Education): string {
   return (entry.highlights ?? []).join(" ");
 }
 
-function yearFor(bullet: string): string {
-  return awardYears.find(({ match }) => bullet.includes(match))?.year ?? "—";
+/**
+ * Résumé award bullets first, then site-only awards; newest first, undated ("—") last, ties in
+ * their original order. A bullet's year is the first entry in `years` whose `match` it contains.
+ */
+export function mergeAwards(
+  bullets: readonly { bullet: string }[],
+  extras: readonly Award[],
+  years: readonly { match: string; year: string }[],
+): Award[] {
+  const yearFor = (bullet: string) =>
+    years.find(({ match }) => bullet.includes(match))?.year ?? "—";
+  return [...bullets.map(({ bullet }) => ({ year: yearFor(bullet), text: bullet })), ...extras]
+    .map((award, index) => ({ award, index }))
+    .sort((a, b) => {
+      const ya = a.award.year === "—" ? -1 : Number(a.award.year);
+      const yb = b.award.year === "—" ? -1 : Number(b.award.year);
+      return yb - ya || a.index - b.index;
+    })
+    .map(({ award }) => award);
 }
 
-/** Résumé award bullets first, then site-only awards; newest first, undated last. */
-export const awards: readonly Award[] = [
-  ...(resume.sections["Awards & Open Source"] ?? []).map(({ bullet }) => ({
-    year: yearFor(bullet),
-    text: bullet,
-  })),
-  ...siteAwards,
-]
-  .map((award, index) => ({ award, index }))
-  .sort((a, b) => {
-    const ya = a.award.year === "—" ? -1 : Number(a.award.year);
-    const yb = b.award.year === "—" ? -1 : Number(b.award.year);
-    return yb - ya || a.index - b.index;
-  })
-  .map(({ award }) => award);
+export const awards: readonly Award[] = mergeAwards(
+  resume.sections["Awards & Open Source"] ?? [],
+  siteAwards,
+  awardYears,
+);
