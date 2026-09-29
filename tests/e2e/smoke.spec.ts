@@ -184,3 +184,26 @@ test.describe("stored theme", () => {
     await expect(page.locator("body")).toHaveCSS("background-color", background.dark);
   });
 });
+
+test.describe("caching and delivery", () => {
+  test("pages inline their CSS instead of linking a stylesheet", async ({ request }) => {
+    for (const { path } of pages) {
+      const html = await (await request.get(path)).text();
+      expect(html, path).not.toMatch(/<link[^>]+rel="?stylesheet/);
+      expect(html, path).toContain("<style");
+    }
+  });
+
+  test("hashed /_astro/ assets are cached immutably; HTML is revalidated", async ({ request }) => {
+    const html = await (await request.get("/")).text();
+    const asset = html.match(/\/_astro\/[^"')\s]+/)?.[0];
+    expect(asset, "no /_astro/ asset referenced from /").toBeDefined();
+
+    const assetResponse = await request.get(asset as string);
+    expect(assetResponse.status()).toBe(200);
+    expect(assetResponse.headers()["cache-control"]).toBe("public, max-age=31536000, immutable");
+
+    const page = await request.get("/");
+    expect(page.headers()["cache-control"]).not.toContain("immutable");
+  });
+});
